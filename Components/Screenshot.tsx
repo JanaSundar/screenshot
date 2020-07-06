@@ -3,6 +3,8 @@ import axios from "axios";
 import fileDowload from "js-file-download";
 import Nprogress from "nprogress";
 
+Nprogress.configure({ showSpinner: false });
+
 const stringToSlug = (value: string) => {
   return value
     .toString()
@@ -45,7 +47,7 @@ const Screenshot = () => {
         }
       );
 
-      const resultData = await result.data;      
+      const resultData = await result.data;
       fileDowload(resultData, `${slugifiedName}_${Date.now()}.jpeg`);
       setDisabled(false);
       Nprogress.done();
@@ -66,21 +68,23 @@ const Screenshot = () => {
   };
 
   return (
-    <div>
+    <>
       <form onSubmit={submit}>
-        <input
-          type="text"
-          placeholder="Enter website url"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Enter Screenshot name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
         <div className="input-container">
+          <input
+            type="text"
+            placeholder="Enter website url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Enter Screenshot name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="rc-container">
           <div className="radio">
             <input
               type="radio"
@@ -118,20 +122,23 @@ const Screenshot = () => {
               Phone
             </label>
           </div>
-          <input
-            type="checkbox"
-            id="fullpage"
-            defaultChecked={fullPage}
-            onChange={(e) => setFull(!fullPage)}
-          />
-          <label htmlFor="fullpage">Full page screenshot</label>
-
+          <div className="checkbox">
+            <input
+              type="checkbox"
+              id="fullpage"
+              defaultChecked={fullPage}
+              onChange={(e) => setFull(!fullPage)}
+            />
+            <label htmlFor="fullpage" /> <span>Full Page</span>
+          </div>
         </div>
-          <button type="submit" disabled={disabled}>
+        <div className="btn-container">
+          <button type="submit" disabled={disabled} className="btn">
             Take Screenshot
           </button>
+        </div>
       </form>
-    </div>
+    </>
   );
 };
 

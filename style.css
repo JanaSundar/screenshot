@@ -1,3 +1,36 @@
+:root {
+  --primary: #3e5c76;
+  --secondary: #14213d;
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box !important;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  color: var(--primary);
+  font-family: "IBM-Regular";
+  overflow-x: hidden !important;
+}
+
+#__next,
+.container {
+  height: inherit;
+}
+
+.container {
+  display: flex;
+  height: inherit;
+  flex-direction: column;
+  width: calc(100vw - 15%);
+  margin: 0 auto;
+}
+
 .radio {
   margin: 0.5rem;
 }
@@ -5,15 +38,15 @@
   position: absolute;
   opacity: 0;
 }
-.radio-label{
-    cursor: pointer;
+.radio-label {
+  cursor: pointer;
 }
 
 .radio input[type="radio"] + .radio-label:before {
-  content: '';
+  content: "";
   background: #f4f4f4;
   border-radius: 100%;
-  border: 1px solid #b4b4b4;
+  border: 1px solid var(--primary) !important;
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -26,19 +59,199 @@
   transition: all 250ms ease;
 }
 .radio input[type="radio"]:checked + .radio-label:before {
-  background-color: #000000;
+  background-color: var(--secondary) !important;
   box-shadow: inset 0 0 0 4px #f4f4f4;
 }
 .radio input[type="radio"]:focus + .radio-label:before {
   outline: none;
-  border-color: #000000;
+  border-color: var(--primary) !important;
 }
 
 .radio input[type="radio"] + .radio-label:empty:before {
   margin-right: 0;
 }
 
-.input-container{
-    display: flex;
-    align-items: center;
+form {
+  width: 50%;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.rc-container {
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: left !important;
+}
+
+.title {
+  font-size: 45px;
+  margin: 1.5rem;
+  text-align: center;
+  font-family: "IBM-SemiBold";
+}
+
+input[type="checkbox"] {
+  visibility: hidden !important;
+}
+
+input:checked {
+  color: var(--primary) !important;
+  /* color: var(--white) !important; */
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox > label {
+  position: relative;
+  width: 45px;
+  height: 20px;
+  display: inline-block;
+  border: 2px solid var(--primary) !important;
+  margin-right: 0.3em;
+  border-radius: 50rem;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.checkbox > label::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--primary);
+  display: block;
+  border-radius: 50rem;
+  transition: all 0.4s;
+}
+
+.checkbox > input:checked + label {
+  background-color: var(--primary) !important;
+}
+
+.checkbox > input:checked ~ label::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--white);
+  display: block;
+  border-radius: 50rem;
+  transform: translate(24px);
+}
+
+.btn-container {
+  width: 100%;
+  margin: 0 auto !important;
+  text-align: center;
+}
+
+.btn {
+  outline: none !important;
+  border: none !important;
+  box-shadow: 0px 0px 1rem rgba(0, 0, 0, 0.3);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  background-color: var(--secondary) !important;
+  color: var(--white) !important;
+  font-family: "IBM-Medium";
+  cursor: pointer;
+}
+
+input[type="text"] {
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  outline: none !important;
+  border: 2px solid var(--primary) !important;
+  width: 300px;
+  margin: 0.6rem;
+  font-size: 1rem;
+  font-family: "IBM-Regular";
+  color: var(--secondary);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: space-between;
+  /* text-align: center; */
+}
+
+footer {
+  font-family: "IBM-Medium";
+  margin: 1.5rem;
+}
+
+button:disabled {
+  opacity: 80% !important;
+}
+
+#nprogress .bar {
+  height: 8px !important;
+}
+
+@media only screen and (max-width: 380px) {
+  .title {
+    font-size: 1.2rem !important;
+  }
+  form {
+    width: 100% !important;
+  }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+  }
+  .mockup {
+    width: 100% !important;
+  }
+
+  .rc-container {
+    flex: 1;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 381px) and (max-width: 550px) {
+  .title {
+    font-size: 2rem;
+  }
+    .mockup {
+    width: 100% !important;
+  }
+  form {
+    width: 90% !important;
+  }
+  .rc-container {
+    flex: 1;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width:551px) and (max-width:800px){
+  .title {
+    font-size: 2.3rem;
+  }
+    form {
+    width: 70% !important;
+  }
 }

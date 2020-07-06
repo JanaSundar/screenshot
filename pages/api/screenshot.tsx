@@ -42,7 +42,7 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     let page = await browser.newPage();
-    await page.goto(url, { waitUntil: "domcontentloaded" });
+    await page.goto(url, { waitUntil: "networkidle2" });
     await page.setViewport({
       width: typeof width === "string" ? parseInt(width) : 1024,
       height: typeof height === "string" ? parseInt(height) : 800,

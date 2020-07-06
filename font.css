@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "IBM-Regular";
+  src: url("./fonts/IBMPlexMono-Regular.ttf") format("truetype");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBM-SemiBold";
+  src: url("./fonts/IBMPlexMono-SemiBold.ttf") format("truetype");
+  font-style: 600;
+}
+
+@font-face {
+  font-family: "IBM-Medium";
+  src: url("./fonts/IBMPlexMono-Medium.ttf") format("truetype");
+  font-style: 500;
+}
