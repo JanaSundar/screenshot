@@ -35,7 +35,7 @@ const Screenshot = () => {
       Nprogress.start();
       const slugifiedName = stringToSlug(name);
       const result = await axios.post(
-        `https://screenshot-rosy.vercel.app/api/screenshot?${sizeProperty[sizeState]}&fullPage=${fullPage}`,
+        `https://screensht.vercel.app/api/screenshot?${sizeProperty[sizeState]}&fullPage=${fullPage}`,
         {
           url,
           name: slugifiedName,
