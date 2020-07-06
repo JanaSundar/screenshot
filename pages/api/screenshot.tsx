@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import puppeteer from "puppeteer";
+import chrome from "chrome-aws-lambda";
+import puppeteer from "puppeteer-core";
 import stream from "stream";
 
 interface queryTypes {
@@ -9,6 +10,12 @@ interface queryTypes {
 interface bodyTypes {
   [key: string]: string;
 }
+
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+};
 
 const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
   const { url, name }: bodyTypes = req.body;
@@ -28,7 +35,12 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const fileName = `${name}_${Date.now()}.jpeg`;
 
-    let browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      args: chrome.args,
+      executablePath: await chrome.executablePath,
+      headless: chrome.headless,
+    });
+
     let page = await browser.newPage();
     await page.goto(url, { waitUntil: "domcontentloaded" });
     await page.setViewport({

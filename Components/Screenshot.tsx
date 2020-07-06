@@ -45,7 +45,7 @@ const Screenshot = () => {
         }
       );
 
-      const resultData = await result.data;
+      const resultData = await result.data;      
       fileDowload(resultData, `${slugifiedName}_${Date.now()}.jpeg`);
       setDisabled(false);
       Nprogress.done();
