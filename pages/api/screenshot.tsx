@@ -42,13 +42,12 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     let page = await browser.newPage();
-    await page.goto(url, { waitUntil: "load", timeout: 60000 });
+    await page.goto(url, { waitUntil: "load" });
     await page.setViewport({
       width: typeof width === "string" ? parseInt(width) : 1024,
       height: typeof height === "string" ? parseInt(height) : 800,
     });
 
-    await page.waitFor(60000);
 
     const img = await page.screenshot({
       type: "jpeg",
