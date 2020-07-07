@@ -42,10 +42,14 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     let page = await browser.newPage();
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60000});
+    await page.goto(url, { waitUntil: "networkidle0", timeout: 60000});
     await page.setViewport({
       width: typeof width === "string" ? parseInt(width) : 1024,
       height: typeof height === "string" ? parseInt(height) : 800,
+    });
+
+    await page.waitForNavigation({
+      waitUntil: 'networkidle0',
     });
 
     const img = await page.screenshot({
