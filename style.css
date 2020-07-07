@@ -202,7 +202,7 @@ footer {
 }
 
 .btn-container > button:disabled {
-  opacity: 90% !important;
+  opacity: 0.7 !important;
 }
 
 #nprogress .bar {
