@@ -44,6 +44,7 @@ const Screenshot = () => {
         },
         {
           responseType: "arraybuffer",
+          timeout: 60000,
         }
       );
 
