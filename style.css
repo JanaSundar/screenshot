@@ -201,8 +201,8 @@ footer {
   margin: 1.5rem;
 }
 
-button:disabled {
-  opacity: 80% !important;
+.btn-container > button:disabled {
+  opacity: 90% !important;
 }
 
 #nprogress .bar {
@@ -235,7 +235,7 @@ button:disabled {
   .title {
     font-size: 2rem;
   }
-    .mockup {
+  .mockup {
     width: 100% !important;
   }
   form {
@@ -247,11 +247,11 @@ button:disabled {
   }
 }
 
-@media (min-width:551px) and (max-width:800px){
+@media (min-width: 551px) and (max-width: 800px) {
   .title {
     font-size: 2.3rem;
   }
-    form {
+  form {
     width: 70% !important;
   }
 }
