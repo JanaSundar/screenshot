@@ -1,34 +1,35 @@
-import { useState, FormEvent } from "react";
-import axios from "axios";
-import fileDowload from "js-file-download";
-import Nprogress from "nprogress";
+import { useState, FormEvent } from 'react';
+import axios from 'axios';
+import fileDowload from 'js-file-download';
+import Nprogress from 'nprogress';
 
 Nprogress.configure({ showSpinner: false });
+
+type response = {
+  image: string;
+  fileName: string;
+};
 
 const stringToSlug = (value: string) => {
   return value
     .toString()
     .trim()
     .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w\-]+/g, "")
-    .replace(/\-\-+/g, "-")
-    .replace(/^-+/, "")
-    .replace(/-+$/, "");
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
 };
 
 const Screenshot = () => {
-  const [url, setUrl] = useState("");
-  const [name, setName] = useState("");
+  const [url, setUrl] = useState('');
+  const [name, setName] = useState('');
   const [sizeState, setSize] = useState(0);
   const [fullPage, setFull] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  const sizeProperty = [
-    "width=1920&height=1080",
-    "width=1280&800",
-    "width=420&height=740",
-  ];
+  const sizeProperty = ['width=1920&height=1080', 'width=1280&800', 'width=420&height=740'];
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,19 +37,19 @@ const Screenshot = () => {
       setDisabled(true);
       Nprogress.start();
       const slugifiedName = stringToSlug(name);
-      const result = await axios.post(
-        `https://screensht.vercel.app/api/screenshot?${sizeProperty[sizeState]}&fullPage=${fullPage}`,
-        {
-          url,
-          name: slugifiedName,
-        },
-        {
-          responseType: "arraybuffer",
-        }
-      );
+      const result = await axios.post<response>(`${process.env.NEXT_PUBLIC_BASE_URL}api/screenshot?${sizeProperty[sizeState]}&fullPage=${fullPage}`, {
+        url,
+        name: slugifiedName,
+      });
 
-      const resultData = await result.data;
-      fileDowload(resultData, `${slugifiedName}_${Date.now()}.jpeg`);
+      const { image, fileName } = result.data;
+
+      const downloadLink = document.createElement('a');
+
+      downloadLink.href = `data:application/jpeg;base64,${image}`;
+      downloadLink.download = fileName;
+      downloadLink.click();
+
       setDisabled(false);
       Nprogress.done();
     } catch (err) {
@@ -56,12 +57,7 @@ const Screenshot = () => {
       setDisabled(false);
       if (err?.response?.data) {
         const { data } = err.response;
-        const decodedString = String.fromCharCode.apply(
-          null,
-          new Uint8Array(data)
-        );
-        const obj = JSON.parse(decodedString);
-        const message = obj["message"];
+        const message = data.err;
         console.log(message);
       }
     }
@@ -71,64 +67,30 @@ const Screenshot = () => {
     <>
       <form onSubmit={submit}>
         <div className="input-container">
-          <input
-            type="text"
-            placeholder="Enter website url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Enter Screenshot name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <input type="text" placeholder="Enter website url" value={url} onChange={(e) => setUrl(e.target.value)} />
+          <input type="text" placeholder="Enter Screenshot name" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="rc-container">
           <div className="radio">
-            <input
-              type="radio"
-              name="size"
-              id="desktop"
-              defaultChecked={true}
-              onChange={(e) => setSize(parseInt(e.target.defaultValue))}
-              value={0}
-            />
+            <input type="radio" name="size" id="desktop" defaultChecked={true} onChange={(e) => setSize(parseInt(e.target.defaultValue))} value={0} />
             <label className="radio-label" htmlFor="desktop">
               Desktop
             </label>
           </div>
           <div className="radio">
-            <input
-              type="radio"
-              name="size"
-              id="tablet"
-              value={1}
-              onChange={(e) => setSize(parseInt(e.target.defaultValue))}
-            />
+            <input type="radio" name="size" id="tablet" value={1} onChange={(e) => setSize(parseInt(e.target.defaultValue))} />
             <label className="radio-label" htmlFor="tablet">
               Tablet
             </label>
           </div>
           <div className="radio">
-            <input
-              type="radio"
-              name="size"
-              id="phone"
-              value={2}
-              onChange={(e) => setSize(parseInt(e.target.defaultValue))}
-            />
+            <input type="radio" name="size" id="phone" value={2} onChange={(e) => setSize(parseInt(e.target.defaultValue))} />
             <label className="radio-label" htmlFor="phone">
               Phone
             </label>
           </div>
           <div className="checkbox">
-            <input
-              type="checkbox"
-              id="fullpage"
-              defaultChecked={fullPage}
-              onChange={(e) => setFull(!fullPage)}
-            />
+            <input type="checkbox" id="fullpage" defaultChecked={fullPage} onChange={(e) => setFull(!fullPage)} />
             <label htmlFor="fullpage" /> <span>Full Page</span>
           </div>
         </div>
