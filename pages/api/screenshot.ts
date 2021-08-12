@@ -40,6 +40,7 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
           args: [],
           executablePath: exePath,
           headless: true,
+          channel: 'chrome',
         };
       } else {
         options = {
@@ -53,7 +54,6 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const browser = await playwright.launch({
       headless: true,
-      channel: 'chrome',
       ...getOptions(),
     });
 
