@@ -1,6 +1,5 @@
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
-import fileDowload from 'js-file-download';
 import Nprogress from 'nprogress';
 
 Nprogress.configure({ showSpinner: false });
@@ -37,7 +36,7 @@ const Screenshot = () => {
       setDisabled(true);
       Nprogress.start();
       const slugifiedName = stringToSlug(name);
-      const result = await axios.post<response>(`${process.env.NEXT_PUBLIC_BASE_URL}api/screenshot?${sizeProperty[sizeState]}&fullPage=${fullPage}`, {
+      const result = await axios.post<response>(`/api/screenshot?${sizeProperty[sizeState]}&fullPage=${fullPage}`, {
         url,
         name: slugifiedName,
       });
