@@ -12,6 +12,7 @@ interface Options {
   args: string[];
   executablePath: string;
   headless: boolean;
+  channel?: string;
 }
 
 const exePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
