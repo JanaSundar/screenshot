@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import chrome from 'chrome-aws-lambda';
-import { chromium as playwright } from 'playwright-core';
+import { chromium as Playwright } from 'playwright-core';
 
 export const config = {
   api: {
@@ -12,10 +12,14 @@ interface Options {
   args: string[];
   executablePath: string;
   headless: boolean;
-  channel?: string;
 }
 
-const exePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const exePath =
+  process.platform === 'win32'
+    ? 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+    : process.platform === 'linux'
+    ? '/usr/bin/google-chrome'
+    : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
 const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
   const { url, name } = req.body;
@@ -41,7 +45,6 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
           args: [],
           executablePath: exePath,
           headless: true,
-          channel: 'chrome',
         };
       } else {
         options = {
@@ -50,12 +53,14 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
           headless: chrome.headless,
         };
       }
+
       return options;
     };
 
-    const browser = await playwright.launch({
-      headless: true,
-      ...getOptions(),
+    const options = await getOptions();
+
+    const browser = await Playwright.launch({
+      ...options,
     });
 
     // const context = await browser.newContext();
@@ -74,13 +79,13 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
       quality: 100,
     });
 
-    const resImg = buffer.toString('base64');
+    const base64 = buffer.toString('base64');
 
     await page.close();
     await browser.close();
 
     res.status(200).json({
-      image: resImg,
+      image: base64,
       fileName,
     });
   } catch (err) {
