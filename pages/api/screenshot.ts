@@ -63,15 +63,16 @@ const screenshot = async (req: NextApiRequest, res: NextApiResponse) => {
       ...options,
     });
 
-    // const context = await browser.newContext();
-
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle' });
-
-    await page.setViewportSize({
-      width: typeof width === 'string' ? parseInt(width) : 1024,
-      height: typeof height === 'string' ? parseInt(height) : 800,
+    const context = await browser.newContext({
+      ignoreHTTPSErrors: true,
+      viewport: {
+        width: typeof width === 'string' ? parseInt(width) : 1024,
+        height: typeof height === 'string' ? parseInt(height) : 720,
+      },
     });
+
+    const page = await context.newPage();
+    await page.goto(url, { waitUntil: 'networkidle' });
 
     const buffer = await page.screenshot({
       type: 'jpeg',
