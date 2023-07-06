@@ -1,8 +1,7 @@
+'use client';
+
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
-import Nprogress from 'nprogress';
-
-Nprogress.configure({ showSpinner: false });
 
 type response = {
   image: string;
@@ -34,11 +33,11 @@ const Screenshot = () => {
     e.preventDefault();
     try {
       setDisabled(true);
-      Nprogress.start();
       const slugifiedName = stringToSlug(name);
-      const result = await axios.post<response>(`/api/screenshot?${sizeProperty[sizeState]}&fullPage=${fullPage}`, {
+      const result = await axios.post<response>(`/api/screenshot`, {
         url,
         name: slugifiedName,
+        isFullPage: fullPage
       });
 
       const { image, fileName } = result.data;
@@ -50,9 +49,7 @@ const Screenshot = () => {
       downloadLink.click();
 
       setDisabled(false);
-      Nprogress.done();
     } catch (err) {
-      Nprogress.done();
       setDisabled(false);
       if (err?.response?.data) {
         const { data } = err.response;
